@@ -16,3 +16,5 @@ Simple project using Terraform to create Azure and AWS resources as required.
 - Keep both provider's information in provider.tf.
 - Explain your project with short details by creating README.md file. 
 
+## Acknowledgments
+Used [Terraform registry](https://registry.terraform.io/) for all documentation for resources. 
