@@ -7,26 +7,29 @@ variable "s3_bucket_name" {
 }
 
 variable "resource_group_name" {
-    default = "project-resource-group"
+  default = "project-resource-group"
 }
 
 variable "virtual_machine_name" {
-    default = "project-virtual-machine"
+  default = "project-virtual-machine"
 }
 
 variable "storage_account_name" {
-    default = "project-storage-account"
+  default = "project-storage-account"
 }
 
 variable "virtual_network_name" {
-    default = "primary-network"
+  default = "primary-network"
 }
 
 variable "subnet_name" {
-    default = "internal"
+  default = "internal"
 }
 
 variable "nic_name" {
-    default = "primary-nic"
+  default = "primary-nic"
 }
 
+variable "os_disk_name" {
+  default = "primary-os-disk"
+}

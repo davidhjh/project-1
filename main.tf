@@ -58,14 +58,19 @@ resource "azurerm_network_interface" "main" {
 }
 
 resource "azurerm_virtual_machine" "primary-vm" {
-  name                = var.virtual_machine_name
-  resource_group_name = azurerm_resource_group.project-resource-group.name
-  location            = azurerm_resource_group.project-resource-group.location
+  name                  = var.virtual_machine_name
+  resource_group_name   = azurerm_resource_group.project-resource-group.name
+  location              = azurerm_resource_group.project-resource-group.location
   network_interface_ids = [azurerm_network_interface.main.id]
   vm_size               = "Standard_DS1_v2"
-  
+
   os_profile_linux_config {
     disable_password_authentication = false
+  }
+
+  storage_os_disk {
+    name          = var.os_disk_name
+    create_option = "Attach"
   }
 
   tags = {
