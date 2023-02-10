@@ -1,3 +1,4 @@
+# First two users 
 resource "azuread_user" "david" {
   user_principal_name = "david@email.com"
   display_name        = "David"
@@ -13,6 +14,7 @@ resource "azuread_user" "ibrahim" {
 
 
 
+# Creating four different userss with `for_each`
 resource "aws_iam_user" "four-users" {
   for_each = toset(var.users)
   name     = each.value
@@ -20,6 +22,7 @@ resource "aws_iam_user" "four-users" {
 
 
 
+# Creating two S3 buckets with `count`
 resource "aws_s3_bucket" "s3" {
   bucket = var.s3_bucket_name
   count  = 2
@@ -27,11 +30,13 @@ resource "aws_s3_bucket" "s3" {
 
 
 
+# Creating resource group
 resource "azurerm_resource_group" "project-resource-group" {
   name     = var.resource_group_name
   location = "East US"
 }
 
+# Creating virtual machine and all its dependencies
 resource "azurerm_virtual_network" "main" {
   name                = var.virtual_network_name
   address_space       = ["10.0.0.0/16"]
@@ -78,6 +83,7 @@ resource "azurerm_virtual_machine" "primary-vm" {
   }
 }
 
+# Creating storage account
 resource "azurerm_storage_account" "storage-account" {
   name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.project-resource-group.name
@@ -89,4 +95,3 @@ resource "azurerm_storage_account" "storage-account" {
     name = "primary-sa"
   }
 }
-
