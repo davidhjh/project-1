@@ -1,7 +1,7 @@
 variable "users" {
-    default = ["afsah, jaspal, matthew, jaldeep"]
+  default = ["afsah, jaspal, matthew, jaldeep"]
 }
 
 variable "s3_bucket_name" {
-    default = "project-bucket-names"
+  default = "project-bucket-names"
 }
