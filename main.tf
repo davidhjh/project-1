@@ -12,7 +12,19 @@ resource "azuread_user" "ibrahim" {
 }
 
 
+
 resource "aws_iam_user" "four-users" {
     for_each = toset(var.users)
     name = each.value
 }
+
+
+
+resource "aws_s3_bucket" "s3" {
+    bucket = var.s3_bucket_name
+    count = 2
+}
+
+
+
+
