@@ -28,18 +28,53 @@ resource "aws_s3_bucket" "s3" {
 
 
 resource "azurerm_resource_group" "project-resource-group" {
-  name     = "project-resource-group"
+  name     = var.resource_group_name
   location = "East US"
 }
 
+resource "azurerm_virtual_network" "main" {
+  name                = var.virtual_network_name
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.project-resource-group.location
+  resource_group_name = azurerm_resource_group.project-resource-group.name
+}
+
+resource "azurerm_subnet" "internal" {
+  name                 = var.subnet_name
+  resource_group_name  = azurerm_resource_group.project-resource-group.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
+resource "azurerm_network_interface" "main" {
+  name                = var.nic_name
+  location            = azurerm_resource_group.project-resource-group.location
+  resource_group_name = azurerm_resource_group.project-resource-group.name
+
+  ip_configuration {
+    name                          = "primaryconfiguration"
+    private_ip_address_allocation = "Static"
+  }
+}
+
 resource "azurerm_virtual_machine" "primary-vm" {
-  name                = "primary-vm"
+  name                = var.virtual_machine_name
   resource_group_name = azurerm_resource_group.project-resource-group.name
   location            = azurerm_resource_group.project-resource-group.location
+  network_interface_ids = [azurerm_network_interface.main.id]
+  vm_size               = "Standard_DS1_v2"
+  
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+
+  tags = {
+    name = "linux-vm"
+  }
 }
 
 resource "azurerm_storage_account" "storage-account" {
-  name                     = "storage-account"
+  name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.project-resource-group.name
   location                 = azurerm_resource_group.project-resource-group.location
   account_tier             = "Standard"
